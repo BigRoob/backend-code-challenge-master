@@ -2,6 +2,8 @@
 
 namespace App\Entities;
 
+use Carbon\Carbon;
+
 class Subscription
 {
     /**
@@ -48,6 +50,16 @@ class Subscription
     protected $status;
 
     /**
+     * Access to the subscription plan.
+     *
+     * @var int
+     */
+    public function getStatus()
+    {
+        return self::STATUSES_ALLOWED[$this->status];
+    }
+
+    /**
      * The subscription plan.
      *
      * @var int
@@ -55,9 +67,75 @@ class Subscription
     protected $plan;
 
     /**
+     * Access to the subscription plan.
+     *
+     * @var int
+     */
+    public function getPlan()
+    {
+        return $this::PLANS_ALLOWED[$this->plan];
+    }
+
+    /**
      * The next delivery date for this subscription.
      *
      * @var \Carbon\Carbon|null
      */
     protected $nextDeliveryDate;
+
+    /**
+     * Set the user current status.
+     *
+     * @param  int  $status
+     */
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    /**
+     * Set the user subscription plan type.
+     *
+     * @param  int  $plan
+     */
+    public function setPlan($plan)
+    {
+        $this->plan = $plan;
+    }
+
+    /**
+     * Set the user next programmed delivery date .
+     *
+     * @param  \Carbon\Carbon  $date
+     */
+    public function setNextDeliveryDate(Carbon $date)
+    {
+        $this->nextDeliveryDate = $date;
+    }
+
+    /**
+     * Get the user next programmed delivery date .
+     *
+     * @var  bool
+     */
+    public function getNextDeliveryDate()
+    {
+        return $this->nextDeliveryDate;
+    }
+
+    /**
+     * Subscription constructor.
+     *
+     * @param \Carbon\Carbon        $deliveryDate
+     * @param int $status
+     * @param int $plan
+     */
+    public function __construct(Carbon $nextDeliveryDate = null, $status = null, $plan = null)
+    {
+        $this->nextDeliveryDate = $nextDeliveryDate;
+        $this->status           = $status;
+        $this->plan             = $plan;
+    }
+
+
 }
